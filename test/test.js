@@ -46,4 +46,8 @@ describe('parser', function() {
   it('limit and offset', () => {
     fixtureTest('limit-offset')
   })
+
+  it('distinct', () => {
+    fixtureTest('distinct')
+  })
 })

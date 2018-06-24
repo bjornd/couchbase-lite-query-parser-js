@@ -1,0 +1,6 @@
+["SELECT", {
+    "WHAT": [
+        [".", "id"]
+    ],
+    "DISTINCT": true
+}]

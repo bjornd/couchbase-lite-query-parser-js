@@ -1031,7 +1031,7 @@ select
 	: SELECT distinct result_columns from where group_by
 		{
 			$$ = { WHAT: $3 };
-			if ($2) { $$.DISTINCT = $2; }
+			if ($2) { $$.DISTINCT = true; }
 			if ($4) { $$.FROM = $4; }
 			if ($5) { $$.WHERE = $5; }
 			if ($6) {
