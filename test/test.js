@@ -6,7 +6,7 @@ let parser
 function fixtureTest(name) {
   const query = fs.readFileSync(`${__dirname}/fixtures/${name}.sql`, 'utf8')
   const queryParsed = parser.parse(query)
-  assert.deepEqual(parser.parse(query), require(`./fixtures/${name}.json`))
+  assert.deepStrictEqual(parser.parse(query), require(`./fixtures/${name}.json`))
 }
 
 describe('parser', function() {

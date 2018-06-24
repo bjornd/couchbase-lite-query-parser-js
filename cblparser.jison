@@ -1389,7 +1389,7 @@ expr
 
 literal_value
 	: signed_number
-		{ $$ = $1; }
+		{ $$ = parseFloat($1); }
 	| string_literal
 		{ $$ = $1; }
 	;
