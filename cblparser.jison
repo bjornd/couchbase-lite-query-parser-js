@@ -1021,11 +1021,16 @@ compound_selects
 select
 	: SELECT distinct result_columns from where group_by
 		{
-			$$ = {WHAT: $3};
-			if ($2) { $$.DISTINCT = $2 }
-			if ($4) { $$.FROM = $4 }
-			if ($5) { $$.WHERE = $5 }
-			if ($6) { $$.GROUP_BY = $6 }
+			$$ = { WHAT: $3 };
+			if ($2) { $$.DISTINCT = $2; }
+			if ($4) { $$.FROM = $4; }
+			if ($5) { $$.WHERE = $5; }
+			if ($6) {
+				$$.GROUP_BY = $6.group_by;
+				if ($6.having) {
+					$$.HAVING = $6.having;
+				}
+			}
 		}
 	;
 
@@ -1139,7 +1144,7 @@ group_by
 
 exprs
 	: exprs COMMA expr
-		{ $$ = $1; $$.push($1); }
+		{ $$ = $1; $$.push($3); }
 	| expr
 		{ $$ = [$1]; }
 	;
@@ -1213,7 +1218,12 @@ vacuum_stmt
 		{ $$ = {statement: 'VACUUM'}; }
 	;
 
-
+dot_expr
+	: name DOT name
+		{ $$ = ['.', $1, $3]; }
+	| name DOT dot_expr
+		{ $$ = ['.', $1, $3]; }
+	;
 
 expr
 	: literal_value
@@ -1226,8 +1236,8 @@ expr
 		{ $$ = {bind_parameter: $1}; }
 	| name
 		{ $$ = ['.', $1]; }
-	| name DOT name
-		{ $$ = ['.', $1, $3]; }
+	| dot_expr
+		{ $$ = $1; }
 
 	| MINUS expr
 		{ $$ = ['-', $2]; }

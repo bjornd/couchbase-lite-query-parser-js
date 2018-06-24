@@ -1,0 +1,9 @@
+["SELECT", {
+    "WHAT": [
+        ["."]
+    ],
+    "GROUP_BY": [
+        [".", "companyId"],
+        [".", "departmentId"]
+    ]
+}]

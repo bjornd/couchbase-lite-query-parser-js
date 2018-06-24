@@ -19,11 +19,23 @@ describe('parser', function() {
     fixtureTest('minimal')
   })
 
+  it('should parse sample query', () => {
+    fixtureTest('sample')
+  })
+
   it('should parse query with * in select', () => {
     fixtureTest('all')
   })
 
-  it('should parse sample query', () => {
-    fixtureTest('sample')
+  it('deep nesting', () => {
+    fixtureTest('deep-nesting')
+  })
+
+  it('group by expression', () => {
+    fixtureTest('group-by')
+  })
+
+  it('group by expression with having expression', () => {
+    fixtureTest('group-by-having')
   })
 })
