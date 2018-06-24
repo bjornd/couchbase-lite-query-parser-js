@@ -1,0 +1,1 @@
+SELECT * FROM db ORDER BY id, date DESC

@@ -569,9 +569,9 @@ asc_desc
 	:
 		{ $$ = undefined; }
 	| ASC
-		{ $$ = {order:'ASC'}; }
+		{ $$ = 'ASC'; }
 	| DESC
-		{ $$ = {order:'DESC'}; }
+		{ $$ = 'DESC'; }
 	;
 
 autoincrement
@@ -823,17 +823,15 @@ limit_clause
 		{ $$ = undefined; }
 	| ORDER BY ordering_terms
 		{
-			$$ = {order_by:$3};
+			$$ = { ORDER_BY: $3 };
 		}
 	| LIMIT expr offset
 		{
-			$$ = {limit:$2};
-			yy.extend($$, $3);
+			$$ = { LIMIT: $2, OFFSET: $3 };
 		}
 	| ORDER BY ordering_terms LIMIT expr offset
 		{
-			$$ = {order_by:$3, limit:$5};
-			yy.extend($$, $6);
+			$$ = { ORDER_BY: $3, LIMIT: $5, OFFSET: $6 };
 		}
 	;
 
@@ -847,8 +845,11 @@ ordering_terms
 ordering_term
 	: name asc_desc
 		{
-			$$ = {term: $1};
-			yy.extend($$, $2);
+			if ($2 == 'DESC') {
+				$$ = ['DESC', ['.', $1]];
+			} else {
+				$$ = ['.', $1];
+			}
 		}
 	;
 detach_stmt
@@ -1007,7 +1008,7 @@ select_stmt
 	: compound_selects limit_clause
 		{
 			$$ = ['SELECT', $1];
-			yy.extend($$,$2);
+			yy.extend($1, $2);
 		}
 	;
 

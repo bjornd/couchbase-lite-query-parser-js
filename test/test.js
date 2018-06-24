@@ -38,4 +38,8 @@ describe('parser', function() {
   it('group by expression with having expression', () => {
     fixtureTest('group-by-having')
   })
+
+  it('order by expression', () => {
+    fixtureTest('order-by')
+  })
 })
