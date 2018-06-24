@@ -42,4 +42,8 @@ describe('parser', function() {
   it('order by expression', () => {
     fixtureTest('order-by')
   })
+
+  it('limit and offset', () => {
+    fixtureTest('limit-offset')
+  })
 })

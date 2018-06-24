@@ -124,7 +124,7 @@ X(['](\\.|[^']|\\\')*?['])+                     return 'XSTRING'
 'KEY'			return 'KEY'
 'LEFT'			return 'LEFT'
 'LIKE'			return 'LIKE'
-'LIMIT'			return 'LMIT'
+'LIMIT'			return 'LIMIT'
 'MATCH'			return 'MATCH'
 'NATURAL'		return 'NATURAL'
 'NO'			return 'NO'
@@ -251,7 +251,7 @@ varname
 
 signed_number
 	: NUMBER
-		{ $$ = $1; }
+		{ $$ = parseFloat($1); }
 	;
 
 string_literal
@@ -455,9 +455,9 @@ columns
 	;
 
 where
-	: WHERE expr
+	:
+	| WHERE expr
 		{ $$ = $2; }
-	|
 	;
 
 when
@@ -825,13 +825,21 @@ limit_clause
 		{
 			$$ = { ORDER_BY: $3 };
 		}
-	| LIMIT expr offset
+	| LIMIT signed_number
 		{
-			$$ = { LIMIT: $2, OFFSET: $3 };
+			$$ = { LIMIT: $2 };
 		}
-	| ORDER BY ordering_terms LIMIT expr offset
+	| LIMIT signed_number OFFSET signed_number
 		{
-			$$ = { ORDER_BY: $3, LIMIT: $5, OFFSET: $6 };
+			$$ = { LIMIT: $2, OFFSET: $4 };
+		}
+	| ORDER BY ordering_terms LIMIT signed_number
+		{
+			$$ = { ORDER_BY: $3, LIMIT: $5 };
+		}
+	| ORDER BY ordering_terms LIMIT signed_number OFFSET signed_number
+		{
+			$$ = { ORDER_BY: $3, LIMIT: $5, OFFSET: $7 };
 		}
 	;
 
@@ -1033,6 +1041,7 @@ select
 				}
 			}
 		}
+	|
 	;
 
 distinct
@@ -1390,7 +1399,7 @@ expr
 
 literal_value
 	: signed_number
-		{ $$ = parseFloat($1); }
+		{ $$ = $1; }
 	| string_literal
 		{ $$ = $1; }
 	;
