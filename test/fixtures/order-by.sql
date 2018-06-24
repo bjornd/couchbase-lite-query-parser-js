@@ -1,1 +1,1 @@
-SELECT * FROM db ORDER BY id, date DESC
+SELECT * ORDER BY id, date DESC

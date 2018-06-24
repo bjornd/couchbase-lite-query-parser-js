@@ -1,1 +1,1 @@
-SELECT * FROM db GROUP BY companyId, departmentId
+SELECT * GROUP BY companyId, departmentId
