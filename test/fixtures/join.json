@@ -1,0 +1,11 @@
+["SELECT", {
+    "WHAT": [
+        ["."]
+    ],
+    "FROM": [
+        {"as": "employee"},
+        {"as": "company", "join": "INNER", "on":
+          ["=", [".", "employee", "companyId"], [".", "company", "id"]]
+        }
+    ]
+}]

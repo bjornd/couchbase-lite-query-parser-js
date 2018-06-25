@@ -1073,7 +1073,7 @@ alias
 	| name
 		{ $$ = {alias: $1};}
 	| AS name
-		{ $$ = {alias: $2};}
+		{ $$ = {as: $2};}
 	;
 
 from
@@ -1082,7 +1082,7 @@ from
 /*	| FROM table_or_subqueries
 		{ $$ = {from:$2}; }
 */	| FROM join_clause
-		{ $$ = undefined/*{from:$2};*/ }
+		{ $$ = $2; }
 	;
 /*
 table_or_subqueries
@@ -1105,9 +1105,10 @@ table_or_subquery
 
 join_clause
 	: table_or_subquery
-		{ $$ = [$1]; }
+		{ delete $1.table; $$ = [$1]; }
 	| join_clause join_operator table_or_subquery join_constraint
 		{
+			delete $3.table;
 			yy.extend($3,$2);
 			yy.extend($3,$4);
 			$$.push($3);
@@ -1115,7 +1116,7 @@ join_clause
 	;
 join_operator
 	: COMMA
-		{ $$ = {join_type: 'CROSS'}; }
+		{ $$ = {join: 'CROSS'}; }
 	| join_type JOIN
 		{ $$ = $1; }
 	| NATURAL join_type JOIN
@@ -1124,15 +1125,15 @@ join_operator
 
 join_type
 	:
-		{ $$ = {join_type: 'INNER'}; }
+		{ $$ = {join: 'INNER'}; }
 	| LEFT OUTER
-		{ $$ = {join_type: 'LEFT'}; }
+		{ $$ = {join: 'LEFT'}; }
 	| LEFT
-		{ $$ = {join_type: 'LEFT'}; }
+		{ $$ = {join: 'LEFT'}; }
 	| INNER
-		{ $$ = {join_type: 'INNER'}; }
+		{ $$ = {join: 'INNER'}; }
 	| CROSS
-		{ $$ = {join_type: 'CROSS'}; }
+		{ $$ = {join: 'CROSS'}; }
 	;
 
 join_constraint

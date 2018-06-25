@@ -50,4 +50,8 @@ describe('parser', function() {
   it('distinct', () => {
     fixtureTest('distinct')
   })
+
+  it('join', () => {
+    fixtureTest('join')
+  })
 })
