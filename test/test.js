@@ -58,4 +58,8 @@ describe('parser', function() {
   it('logical operators', () => {
     fixtureTest('logical-operators')
   })
+
+  it('arithmetic operators', () => {
+    fixtureTest('arithmetic-operators')
+  })
 })
