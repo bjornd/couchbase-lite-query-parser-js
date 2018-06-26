@@ -54,4 +54,8 @@ describe('parser', function() {
   it('join', () => {
     fixtureTest('join')
   })
+
+  it('logical operators', () => {
+    fixtureTest('logical-operators')
+  })
 })

@@ -256,9 +256,9 @@ signed_number
 
 string_literal
 	: STRING
-		{ $$ = $1; }
+		{ $$ = $1.substr(1,$1.length-2); }
 	| XSTRING
-		{ $$ = $1; }
+		{ $$ = $1.substr(1,$1.length-2); }
 	;
 
 database_table_name
@@ -1284,12 +1284,14 @@ expr
 		{ $$ = ['AND', $1, $3]; }
 	| expr OR expr
 		{ $$ = ['OR', $1, $3]; }
+	| NOT expr
+		{ $$ = ['NOT', $2]; }
 
 
 	| name LPAR arguments RPAR
 		{ $$ = {function:$1, arguments: $3}; }
 	| LPAR expr RPAR
-		{ $$ = {op: 'PAR', expr:$2}; }
+		{ $$ = $2; }
 	| CAST LPAR expr AS type_name RPAR
 		{ $$ = {op: 'CAST', expr:$2}; yy.extend($$,$5); }
 
