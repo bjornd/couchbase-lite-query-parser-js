@@ -1374,13 +1374,13 @@ expr
 */
 	| expr BETWEEN expr
 		{
-			if($3.op != 'AND') throw new Error('Wrong syntax of BETWEEN AND');
-			$$ = {op: 'BETWEEN', expr: $1, left:$3.left, right:$3.right};
+			if($3[0] != 'AND') throw new Error('Wrong syntax of BETWEEN AND');
+			$$ = ['BETWEEN', $1, $3[1], $3[2]];
 		}
 	| expr NOT BETWEEN expr
 		{
-			if($4.op != 'AND') throw new Error('Wrong syntax of NOT BETWEEN AND');
-			$$ = {op: 'BETWEEN', not:true, expr: $1, left:$4.left, right:$4.right};
+			if($4[0] != 'AND') throw new Error('Wrong syntax of NOT BETWEEN AND');
+			$$ = ['NOT', ['BETWEEN', $2, $4[1], $4[2]]];
 		}
 	| expt not IN database_table_name
 		{ $$ = {op: 'IN', expr: $1}; yy.extend($$,$2); yy.extend($$,$4);}
