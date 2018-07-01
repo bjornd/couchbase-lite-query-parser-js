@@ -1,0 +1,1 @@
+SELECT * WHERE name LIKE 'J%' AND name NOT LIKE 'M%'

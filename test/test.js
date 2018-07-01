@@ -63,11 +63,19 @@ describe('parser', function() {
     fixtureTest('arithmetic-operators')
   })
 
+  it('relational operators', () => {
+    fixtureTest('relational-operators')
+  })
+
   it('between operator', () => {
     fixtureTest('between')
   })
 
-  it('relational operators', () => {
-    fixtureTest('relational-operators')
+  it('match', () => {
+    fixtureTest('match')
+  })
+
+  it('like', () => {
+    fixtureTest('like')
   })
 })

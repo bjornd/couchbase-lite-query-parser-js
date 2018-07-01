@@ -1311,53 +1311,13 @@ expr
 	| expr ESCAPE expr
 		{ $$ = {op:'ESCAPE', left: $1, right: $3}; }
 	| expr LIKE expr
-		{
-			$$ = {op: 'LIKE', left:$1, right:$3};
-			if(typeof $3 != 'undefined') {
-				if($3.op != 'ESCAPE') {
-					throw new Error('Should be ESCAPE');
-				} else {
-					$$.right = $3.left;
-					$$.escape = $3.right;
-				}
-			}
-		}
+		{	$$ = ['LIKE', $1, $3]; }
 	| expr NOT LIKE expr
-		{
-			$$ = {op: 'LIKE', not:true, left:$1, right:$4};
-			if(typeof $4 != 'undefined') {
-				if($4.op != 'ESCAPE') {
-					throw new Error('Should be ESCAPE');
-				} else {
-					$$.right = $4.left;
-					$$.escape = $4.right;
-				}
-			}
-		}
-	| expr MATCH expr
-		{
-			$$ = {op: 'MATCH', left:$1, right:$3};
-			if(typeof $3 != 'undefined') {
-				if($3.op != 'ESCAPE') {
-					throw new Error('Should be ESCAPE');
-				} else {
-					$$.right = $3.left;
-					$$.escape = $3.right;
-				}
-			}
-		}
-	| expr NOT MATCH expr
-		{
-			$$ = {op: 'MATCH', not:true, left:$1, right:$4};
-			if(typeof $4 != 'undefined') {
-				if($4.op != 'ESCAPE') {
-					throw new Error('Should be ESCAPE');
-				} else {
-					$$.right = $4.left;
-					$$.escape = $4.right;
-				}
-			}
-		}
+		{	$$ = ['NOT', ['LIKE', $2, $4]]; }
+	| name MATCH string_literal
+		{	$$ = ['MATCH', $1, $3]; }
+	| name NOT MATCH string_literal
+		{ $$ = ['NOT', ['MATCH', $1, $4]]; }
 
 /*	| expr like_match expr escape_expr
 */

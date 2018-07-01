@@ -1,0 +1,10 @@
+["SELECT", {
+    "WHAT": [
+        ["."]
+    ],
+    "WHERE": [
+      "AND",
+      ["LIKE", [".", "name"], "J%"],
+      ["NOT", ["LIKE", [".", "name"], "M%"]]
+    ]
+}]

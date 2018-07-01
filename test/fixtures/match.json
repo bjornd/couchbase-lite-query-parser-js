@@ -1,0 +1,10 @@
+["SELECT", {
+    "WHAT": [
+        ["."]
+    ],
+    "WHERE": [
+      "AND",
+      ["MATCH", "bioIndex", "engineer"],
+      ["NOT", ["MATCH", "bioIndex", "manager"]]
+    ]
+}]
