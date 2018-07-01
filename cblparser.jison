@@ -1319,10 +1319,16 @@ expr
 		{	$$ = ['LIKE', $1, $3]; }
 	| expr NOT LIKE expr
 		{	$$ = ['NOT', ['LIKE', $1, $4]]; }
-	| name MATCH string_literal
-		{	$$ = ['MATCH', $1, $3]; }
-	| name NOT MATCH string_literal
-		{ $$ = ['NOT', ['MATCH', $1, $4]]; }
+	| expr MATCH string_literal
+		{
+			if ($1[0] != '.' || typeof $1[1] != 'string') throw new Error('Wrong syntax of MATCH');
+			$$ = ['MATCH', $1[1], $3];
+		}
+	| expr NOT MATCH string_literal
+		{
+			if ($1[0] != '.' || typeof $1[1] != 'string') throw new Error('Wrong syntax of NOT MATCH');
+			$$ = ['NOT', ['MATCH', $1[1], $4]];
+		}
 
 /*	| expr like_match expr escape_expr
 */
