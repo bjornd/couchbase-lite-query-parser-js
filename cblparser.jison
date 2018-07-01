@@ -126,6 +126,7 @@ X(['](\\.|[^']|\\\')*?['])+                     return 'XSTRING'
 'LIKE'			return 'LIKE'
 'LIMIT'			return 'LIMIT'
 'MATCH'			return 'MATCH'
+'MISSING'			return 'MISSING'
 'NATURAL'		return 'NATURAL'
 'NO'			return 'NO'
 'NOT'			return 'NOT'
@@ -1300,20 +1301,24 @@ expr
 	| expr ISNULL
 		{ $$ = {op: 'ISNULL', expr:$1}; }
 	| expr IS NULL
-		{ $$ = {op: 'ISNULL', expr:$1}; }
+		{ $$ = ['IS NULL', $1]; }
 	| expr NOTNULL
 		{ $$ = {op: 'NOTNULL', expr:$1}; }
 	| expr NOT NULL
 		{ $$ = {op: 'NOTNULL', expr:$1}; }
 	| expr IS NOT NULL
-		{ $$ = {op: 'NOTNULL', expr:$1}; }
+		{ $$ = ['IS NOT NULL', $1]; }
+	| expr IS MISSING
+		{ $$ = ['IS MISSING', $1]; }
+	| expr IS NOT MISSING
+		{ $$ = ['IS NOT MISSING', $1]; }
 
 	| expr ESCAPE expr
 		{ $$ = {op:'ESCAPE', left: $1, right: $3}; }
 	| expr LIKE expr
 		{	$$ = ['LIKE', $1, $3]; }
 	| expr NOT LIKE expr
-		{	$$ = ['NOT', ['LIKE', $2, $4]]; }
+		{	$$ = ['NOT', ['LIKE', $1, $4]]; }
 	| name MATCH string_literal
 		{	$$ = ['MATCH', $1, $3]; }
 	| name NOT MATCH string_literal

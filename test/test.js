@@ -78,4 +78,8 @@ describe('parser', function() {
   it('like', () => {
     fixtureTest('like')
   })
+
+  it('null and missing', () => {
+    fixtureTest('null-missing')
+  })
 })

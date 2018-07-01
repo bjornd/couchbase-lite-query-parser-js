@@ -1,0 +1,16 @@
+["SELECT", {
+    "WHAT": [
+        ["."]
+    ],
+    "WHERE":
+        ["OR",
+            ["OR",
+                ["OR",
+                    ["IS NULL", [".", "fname"]],
+                    ["IS MISSING", [".", "lname"]]
+                ],
+                ["IS NOT NULL", [".", "country"]]
+            ],
+            ["IS NOT MISSING", [".", "phone"]]
+        ]
+}]
