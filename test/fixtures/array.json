@@ -1,0 +1,11 @@
+["SELECT", {
+    "WHAT": [
+        ["."]
+    ],
+    "WHERE": [
+      "ANY",
+      "genre",
+      [".", "genres"],
+      ["LIKE", [".", "genre"], "%rock%"]
+    ]
+}]

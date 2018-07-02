@@ -82,4 +82,8 @@ describe('parser', function() {
   it('null and missing', () => {
     fixtureTest('null-missing')
   })
+
+  it('array operators', () => {
+    fixtureTest('array')
+  })
 })

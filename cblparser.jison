@@ -59,6 +59,7 @@ X(['](\\.|[^']|\\\')*?['])+                     return 'XSTRING'
 'ALTER'			return 'ALTER'
 'ANALYZE'		return 'ANALYZE'
 'AND'			return 'AND'
+'ANY'			return 'ANY'
 'AS'			return 'AS'
 'ASC'			return 'ASC'
 'ATTACH'		return 'ATTACH'
@@ -94,6 +95,7 @@ X(['](\\.|[^']|\\\')*?['])+                     return 'XSTRING'
 'ELSE'			return 'ELSE'
 'END'			return 'END'
 'ESCAPE'		return 'ESCAPE'
+'EVERY'		return 'EVERY'
 'EXCEPT'		return 'EXCEPT'
 'EXCLUSIVE'		return 'EXCLUSIVE'
 'EXISTS'		return 'EXISTS'
@@ -154,6 +156,7 @@ X(['](\\.|[^']|\\\')*?['])+                     return 'XSTRING'
 'RIGHT'			return 'RIGHT'
 'ROLLBACK'		return 'ROLLBACK'
 'ROW'			return 'ROW'
+'SATISFIES'	return 'SATISFIES'
 'SAVEPOINT'		return 'SAVEPOINT'
 'SELECT'		return 'SELECT'
 'SET'			return 'SET'
@@ -1231,7 +1234,9 @@ vacuum_stmt
 	;
 
 dot_expr
-	: name DOT name
+	: name
+		{ $$ = ['.', $1]; }
+	| name DOT name
 		{ $$ = ['.', $1, $3]; }
 	| name DOT dot_expr
 		{ $$ = ['.', $1, $3]; }
@@ -1353,6 +1358,12 @@ expr
 			if($4[0] != 'AND') throw new Error('Wrong syntax of NOT BETWEEN AND');
 			$$ = ['NOT', ['BETWEEN', $2, $4[1], $4[2]]];
 		}
+	| ANY name IN dot_expr SATISFIES expr END
+		{ $$ = ['ANY', $2, $4, $6]; }
+	| EVERY name IN dot_expr SATISFIES expr END
+		{ $$ = ['EVERY', $2, $4, $6]; }
+	| ANY AND EVERY name IN dot_expr SATISFIES expr END
+		{ $$ = ['EVERY', $4, $6, $8]; }
 	| expt not IN database_table_name
 		{ $$ = {op: 'IN', expr: $1}; yy.extend($$,$2); yy.extend($$,$4);}
 	| expt not IN LPAR RPAR
