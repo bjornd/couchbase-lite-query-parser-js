@@ -1364,14 +1364,10 @@ expr
 		{ $$ = ['EVERY', $2, $4, $6]; }
 	| ANY AND EVERY name IN dot_expr SATISFIES expr END
 		{ $$ = ['EVERY', $4, $6, $8]; }
-	| expt not IN database_table_name
-		{ $$ = {op: 'IN', expr: $1}; yy.extend($$,$2); yy.extend($$,$4);}
-	| expt not IN LPAR RPAR
-		{ $$ = {op: 'IN', expr: $1}; yy.extend($$,$2); yy.extend($$,$4);}
-	| expt not IN LPAR select_stmt RPAR
-		{ $$ = {op: 'IN', expr: $1, select: $5}; yy.extend($$,$2); }
-	| expt not IN LPAR exprs RPAR
-		{ $$ = {op: 'IN', expr: $1, exprs: $5}; yy.extend($$,$2); }
+	| expr IN expr
+		{ $$ = ['IN', $1, $3];}
+	| expr NOT IN expr
+		{ $$ = ['NOT', ['IN', $1, $4]];}
 	| not EXISTS LPAR select_stmt RPAR
 		{ $$ = {op:'EXISTS', select: $4}; yy.extend($$,$1);}
 	| LPAR select_stmt RPAR

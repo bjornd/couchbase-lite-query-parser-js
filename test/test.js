@@ -86,4 +86,8 @@ describe('parser', function() {
   it('array operators', () => {
     fixtureTest('array')
   })
+
+  it('in', () => {
+    fixtureTest('in')
+  })
 })
