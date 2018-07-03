@@ -90,4 +90,8 @@ describe('parser', function() {
   it('in', () => {
     fixtureTest('in')
   })
+
+  it('function', () => {
+    fixtureTest('function')
+  })
 })

@@ -1295,7 +1295,7 @@ expr
 
 
 	| name LPAR arguments RPAR
-		{ $$ = {function:$1, arguments: $3}; }
+		{ $$ = [$1 + '()', ...$3]; }
 	| LPAR expr RPAR
 		{ $$ = $2; }
 	| CAST LPAR expr AS type_name RPAR
