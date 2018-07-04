@@ -1,0 +1,5 @@
+["SELECT", {
+    "WHAT": [
+        ["CASE", [".", "shipped"], ["WHEN", "YES", "shipped"], ["ELSE", "not-shipped-yet"]]
+    ]
+}]

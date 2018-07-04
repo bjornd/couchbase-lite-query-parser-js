@@ -39,7 +39,7 @@
 %%
 
 \[([^\]])*?\]									return 'BRALITERAL'
-(["](\\.|[^"]|\\\")*?["])+                    	return 'BRALITERAL'
+(["](\\.|[^"]|\\\")*?["])+                    	return 'STRING'
 ([`](\\.|[^"]|\\\")*?[`])+                    	return 'BRALITERAL'
 X(['](\\.|[^']|\\\')*?['])+                     return 'XSTRING'
 (['](\\.|[^']|\\\')*?['])+                  	return 'STRING'
@@ -1373,9 +1373,7 @@ expr
 	| LPAR select_stmt RPAR
 		{ $$ = {op:'SELECT', select:$2}; }
 	| CASE expr when_then_list else END
-		{ $$ = {op: 'CASE', expr: $2, whens: $3}; yy.extend($$,$4); }
-	| CASE when_then_list else END
-		{ $$ = {op: 'WHEN', whens: $3}; yy.extend($$,$4);}
+		{ $$ = ["CASE", $2, ...$3, $4]; }
 	;
 
 literal_value
@@ -1429,12 +1427,12 @@ when_then_list
 
 when_then
 	: WHEN expr THEN expr
-		{ $$ = {when: $1, then: $4}; }
+		{ $$ = ["WHEN", $2, $4]; }
 	;
 
 else
 	:
 		{ $$ = undefined; }
 	| ELSE expr
-		{ $$ = {else:$2}; }
+		{ $$ = ["ELSE", $2]; }
 	;

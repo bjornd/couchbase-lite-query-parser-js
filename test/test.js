@@ -94,4 +94,8 @@ describe('parser', function() {
   it('function', () => {
     fixtureTest('function')
   })
+
+  it('case', () => {
+    fixtureTest('case')
+  })
 })
