@@ -1,6 +1,7 @@
 const assert = require('assert')
 const fs = require('fs')
 const execSync = require('child_process').execSync
+const jison = require('jison')
 let parser
 
 function fixtureTest(name) {
@@ -11,8 +12,13 @@ function fixtureTest(name) {
 
 describe('parser', function() {
   before(() => {
-    execSync('jison cblparser.jison')
-    parser = require('../parser')
+    const bnf = fs.readFileSync('cblparser.jison', 'utf8')
+    const cblParser = new jison.Parser(bnf)
+    const options = {
+      moduleMain: function(){},
+    }
+    fs.writeFileSync('cblparser.js', cblParser.generate(options))
+    parser = require('../index')
   })
 
   it('should parse minimal query', () => {
